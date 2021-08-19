@@ -2,22 +2,64 @@ networks:
   redis-network:
     driver: bridge
 services:
-  redis-0:
-    command: redis-server /usr/local/etc/redis/redis.conf --requirepass dadianas
-    container_name: redis-0
+  redis-7000:
+    command: redis-server /usr/local/etc/redis/redis7000.conf --requirepass dadianas
+    container_name: redis-7000
     image: redis:alpine
     networks:
     - redis-network
     ports:
-    - 6379:6379
+    - 7000:7000
     volumes:
-    - ./master_config/redis.conf:/usr/local/etc/redis/redis.conf
-  redis-1:
-    command: redis-server /usr/local/etc/redis/redis.conf --requirepass dadianas
-    container_name: redis-1
+    - ./production/generated_config/:/usr/local/etc/redis/
+  redis-7001:
+    command: redis-server /usr/local/etc/redis/redis7001.conf --requirepass dadianas
+    container_name: redis-7001
     image: redis:alpine
     networks:
     - redis-network
+    ports:
+    - 7001:7001
     volumes:
-    - ./slave_config/redis.conf:/usr/local/etc/redis/redis.conf
+    - ./production/generated_config/:/usr/local/etc/redis/
+  redis-7002:
+    command: redis-server /usr/local/etc/redis/redis7002.conf --requirepass dadianas
+    container_name: redis-7002
+    image: redis:alpine
+    networks:
+    - redis-network
+    ports:
+    - 7002:7002
+    volumes:
+    - ./production/generated_config/:/usr/local/etc/redis/
+  redis-7003:
+    command: redis-server /usr/local/etc/redis/redis7003.conf --requirepass dadianas
+    container_name: redis-7003
+    image: redis:alpine
+    networks:
+    - redis-network
+    ports:
+    - 7003:7003
+    volumes:
+    - ./production/generated_config/:/usr/local/etc/redis/
+  redis-7004:
+    command: redis-server /usr/local/etc/redis/redis7004.conf --requirepass dadianas
+    container_name: redis-7004
+    image: redis:alpine
+    networks:
+    - redis-network
+    ports:
+    - 7004:7004
+    volumes:
+    - ./production/generated_config/:/usr/local/etc/redis/
+  redis-7005:
+    command: redis-server /usr/local/etc/redis/redis7005.conf --requirepass dadianas
+    container_name: redis-7005
+    image: redis:alpine
+    networks:
+    - redis-network
+    ports:
+    - 7005:7005
+    volumes:
+    - ./production/generated_config/:/usr/local/etc/redis/
 version: '2'
