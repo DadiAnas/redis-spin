@@ -1,0 +1,25 @@
+networks:
+  redis-network:
+    driver: bridge
+services:
+  redis-0:
+    command: redis-server /usr/local/etc/redis/redis.conf --requirepass dadianas
+    container_name: redis-0
+    image: redis:alpine
+    networks:
+    - redis-network
+    ports:
+    - 6379:6379
+    volumes:
+    - ./production/master_config/redis.conf:/usr/local/etc/redis/redis.conf
+  redis-1:
+    command: redis-server /usr/local/etc/redis/redis.conf --requirepass dadianas
+    container_name: redis-1
+    image: redis:alpine
+    networks:
+    - redis-network
+    ports:
+    - 7000:7000
+    volumes:
+    - ./production/master_config/redis.conf:/usr/local/etc/redis/redis.conf
+version: '2'
