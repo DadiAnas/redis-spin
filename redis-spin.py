@@ -11,6 +11,7 @@ def generate_development_redis_spin():
     redis_dockercompose = DockerCompose(file_name="docker-compose.yml", version="2.2")
     redis_dockercompose.add_network("redis-network", {"driver": "bridge"})
     redis_service = Service(image="redis:alpine",
+                            container_name="redis-standalone",
                             networks=["redis-network"],
                             ports=["6379:6379"]
                             )
@@ -27,14 +28,13 @@ def generate_production_redis_spin():
                                    container_name="redis-0",
                                    networks=["redis-network"],
                                    ports=["6379:6379"],
-                                   volumes=["./production/master_config/redis.conf:/usr/local/etc/redis/redis.conf"],
+                                   volumes=["./master_config/redis.conf:/usr/local/etc/redis/redis.conf"],
                                    commands="redis-server /usr/local/etc/redis/redis.conf --requirepass dadianas")
 
     redis_node_1_service = Service(image="redis:alpine",
                                    container_name="redis-1",
                                    networks=["redis-network"],
-                                   ports=["7000:7000"],
-                                   volumes=["./production/master_config/redis.conf:/usr/local/etc/redis/redis.conf"],
+                                   volumes=["./slave_config/redis.conf:/usr/local/etc/redis/redis.conf"],
                                    commands="redis-server /usr/local/etc/redis/redis.conf --requirepass dadianas")
 
     redis_dockercompose.add_service("redis-0", redis_node_0_service)
@@ -61,11 +61,11 @@ if __name__ == '__main__':
             generate_production_redis_spin().to_yaml(path="./production/")
             chdir(getcwd() + "/production")
             system("docker-compose up ")
-    except:
+    except Exception:
         warning_message = """
         To use this script you should follow the following pattern:
         redis-spin.py <mode>
         where mode can be dev or prod.
         """
         logging.warning(log_time(warning_message))
-        raise warning_message
+        raise Exception

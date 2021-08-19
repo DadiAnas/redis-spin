@@ -3,6 +3,7 @@ networks:
     driver: bridge
 services:
   redis:
+    container_name: redis-standalone
     image: redis:alpine
     networks:
     - redis-network

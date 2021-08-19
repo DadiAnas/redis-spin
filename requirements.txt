@@ -1,2 +1,2 @@
-pydockercompose==0.0.41
+pydockercompose==0.0.42
 PyYAML==5.4.1
